@@ -1,0 +1,8 @@
+platform :ios, ‘8.0’
+target "XXXCardStoreDemo" do
+use_frameworks!
+
+pod 'SDWebImage'
+
+
+end

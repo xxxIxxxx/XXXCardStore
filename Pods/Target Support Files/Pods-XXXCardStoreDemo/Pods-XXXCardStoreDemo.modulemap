@@ -1,0 +1,6 @@
+framework module Pods_XXXCardStoreDemo {
+  umbrella header "Pods-XXXCardStoreDemo-umbrella.h"
+
+  export *
+  module * { export * }
+}
