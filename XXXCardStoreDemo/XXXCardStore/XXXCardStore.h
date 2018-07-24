@@ -61,7 +61,8 @@
 @property (nonatomic, unsafe_unretained) BOOL isInfiniteLoop;
 /// 放弃拖拽距离 默认70.0    该距离是斜边的长
 @property (nonatomic, unsafe_unretained) float cancleDistance;
-
+/// 拖动时是否显示缩放效果
+@property (nonatomic, unsafe_unretained) BOOL isScale;
 
 //MARK: - 自定义卡片
 

@@ -17,6 +17,8 @@
 
 @property (nonatomic, unsafe_unretained) NSInteger bottomShowCardIndex;
 
+@property (nonatomic, strong) UIView *nowMoveCardView;
+
 @end
 
 @interface UIView (XXXCardStore)
@@ -32,20 +34,6 @@
 
 @implementation UIView (XXXCardStore)
 
-- (void)animationScale:(CGFloat)scale duration:(CFTimeInterval)duration {
-
-    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionLayoutSubviews animations:^{
-        self.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, 1);
-    } completion:^(BOOL finished) {
-    }];
-}
-
-- (void)animationRotate:(CGFloat)angle {
-    [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionLayoutSubviews animations:^{
-        self.transform = CGAffineTransformRotate(CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 1), angle);
-    } completion:^(BOOL finished) {
-    }];
-}
 
 - (void)setHeight_xxx:(CGFloat)height_xxx {
     CGRect frame = self.frame;
@@ -116,6 +104,8 @@
 
 - (void)reloadData {
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
     self.cardHeight = self.height_xxx - (self.showOverlayCount-1)*self.cardOffset;
     
     if (self.cardViewArr.count > 0) {
@@ -126,7 +116,7 @@
             obj.height_xxx = self.cardHeight;
             obj.center = CGPointMake(self.width_xxx/2.0, self.cardHeight/2.0+idx*self.cardOffset);
             float offset = self.cardOffset/self.cardHeight;
-            [obj animationScale:1.0 - offset*idx duration:0.1 ];
+            [self animationView:obj scale:1.0 - offset*idx duration:0.1];
         }];
         
         return;
@@ -159,16 +149,22 @@
             imageV.tag = IMGV_Tag;
         }
         float offset = self.cardOffset/self.cardHeight;
-        [cardView animationScale:1.0 - offset*i duration:0.1 ];
+        [self animationView:cardView scale:1.0-offset*i duration:0.1];
         [self.cardViewArr addObject:cardView];
         
     }
 }
 
+- (void)applicationDidBecomeActive {
+    [self addSubview:self.nowMoveCardView];
+    self.nowMoveCardView.center = CGPointMake(self.width_xxx/2.0, self.cardHeight/2.0);
+    [self animationView:self.nowMoveCardView scale:1 duration:0.001];
+}
+
 - (void)panGes:(UIPanGestureRecognizer *)pan {
     
     UIView *cardView = self.cardViewArr.firstObject;
-    
+    self.nowMoveCardView = cardView;
     if (pan.state == UIGestureRecognizerStateBegan) {
         UIWindow *kWindow = [UIApplication sharedApplication].keyWindow;
         CGPoint oriPoint = [cardView convertRect:cardView.frame toView:kWindow].origin;
@@ -176,7 +172,10 @@
         cardView.centerX_xxx = oriPoint.x + cardView.width_xxx/2.0;
         cardView.centerY_xxx = oriPoint.y + cardView.height_xxx/2.0;
         self.cardInwindowCenter = CGPointMake(cardView.centerX_xxx, cardView.centerY_xxx);
-        [cardView animationScale:0.9 duration:0.001 ];
+        if (self.isScale) {
+            [self animationView:cardView scale:0.9 duration:0.001];
+        }
+        
     }
     
     CGPoint transLcation = [pan translationInView:self];
@@ -186,7 +185,7 @@
     if (xP < -1) xP = -1;
     if (xP > 1) xP = 1;
     CGFloat rotation = M_PI_2/4*xP;
-    [cardView animationRotate:rotation];
+    [self animationView:cardView rotate:rotation];
     
     
     if (pan.state == UIGestureRecognizerStateEnded) {
@@ -196,7 +195,8 @@
         if (moveC < self.cancleDistance) {
             [self addSubview:cardView];
             cardView.center = CGPointMake(self.width_xxx/2.0, self.cardHeight/2.0);
-            [cardView animationScale:1 duration:0.01 ];
+            [self animationView:cardView scale:1 duration:0.001];
+            self.nowMoveCardView = nil;
             return;
         }
         
@@ -231,9 +231,10 @@
             }
             reuseView.center = CGPointMake(self.width_xxx/2.0, self.cardHeight/2.0+(self.showOverlayCount+1)*self.cardOffset);
             float offset = self.cardOffset/self.cardHeight;
-            [reuseView animationScale:1.0 - offset*(self.showOverlayCount+1) duration:0.0001 ];
+            [self animationView:reuseView scale:1-offset*(self.showOverlayCount+1) duration:0.00001];
             [self.cardViewArr addObject:reuseView];
             [self insertSubview:reuseView atIndex:0];
+            self.nowMoveCardView = nil;
         }
         [self reloadData];
     }
@@ -249,6 +250,25 @@
     if ([_delegate respondsToSelector:@selector(tapCard:cardStore:)]) {
         [_delegate tapCard:_currentIndex cardStore:self];
     }
+}
+
+- (void)animationView:(UIView *)cardView scale:(CGFloat)scale duration:(CFTimeInterval)duration {
+    
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionLayoutSubviews animations:^{
+        cardView.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, 1);
+    } completion:^(BOOL finished) {
+    }];
+}
+
+- (void)animationView:(UIView *)cardView rotate:(CGFloat)angle {
+    [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionLayoutSubviews animations:^{
+        float r = 1.0;
+        if (self.isScale) {
+            r = 0.9;
+        }
+        cardView.transform = CGAffineTransformRotate(CGAffineTransformScale(CGAffineTransformIdentity, r, 1), angle);
+    } completion:^(BOOL finished) {
+    }];
 }
 
 
