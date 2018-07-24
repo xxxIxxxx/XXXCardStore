@@ -7,6 +7,9 @@
 //
 
 #import "CustomView.h"
+
+#import "XXXCardStore/XXXCardStore.h"
+
 @interface CustomView ()
 
 @property (nonatomic, strong) UIView *leftV;
@@ -28,30 +31,43 @@
 
 
 - (void)initViews {
+    
+    /// 创建一个和cardView一样大小的 放视图，然后对cardView layer做处理
+    UIView *boView = [UIView new];
+    [self addSubview:boView];
+    boView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    boView.backgroundColor = [UIColor whiteColor];
+    boView.layer.cornerRadius = 7.0;
+    boView.layer.masksToBounds = YES;
+    
     UILabel *lab = [UILabel new];
-    [self addSubview:lab];
+    [boView addSubview:lab];
     lab.frame = CGRectMake(0, 20, 50, 50);
     self.lab = lab;
     
     UIView *lv = [UIView new];
-    [self addSubview:lv];
+    [boView addSubview:lv];
     lv.backgroundColor = [UIColor orangeColor];
     lv.frame = CGRectMake(0, 80, 60, 60);
     self.leftV = lv;
     
     UIView *rv = [UIView new];
-    [self addSubview:rv];
+    [boView addSubview:rv];
     rv.backgroundColor = [UIColor redColor];
     rv.frame = CGRectMake(100, 80, 60, 60);
     self.rightV = rv;
+    
+    
+    self.layer.shadowOpacity = 0.3;
+    self.layer.shadowOffset = CGSizeMake(1, 2);
+    self.layer.shadowColor = [UIColor blackColor].CGColor;
     
 }
 
 - (void)setIndex:(NSInteger)index {
     
     _index = index;
-    self.backgroundColor = [UIColor darkGrayColor];
-    self.lab.text = [NSString stringWithFormat:@"%ld",index];
+    self.lab.text = [NSString stringWithFormat:@"%ld",(long)index];
     self.leftV.hidden = NO;
     self.rightV.hidden = NO;
     if (index%2 == 0) {

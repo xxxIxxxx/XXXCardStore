@@ -10,6 +10,7 @@
 #import "XXXCardStore.h"
 #import "CustomView.h"
 
+
 @interface ViewController ()<XXXCardStoreDelegate>
 
 @end
@@ -26,7 +27,7 @@
     btn.frame = CGRectMake(left, 500, w, 50);
     
     btn.backgroundColor = [UIColor orangeColor];
-    [btn addTarget:self action:@selector(sssss) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(addCardStoreClick) forControlEvents:UIControlEventTouchUpInside];
     
     
     
@@ -49,7 +50,7 @@
 }
 
 
-- (void)sssss {
+- (void)addCardStoreClick {
     
     [self.view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if (![obj isKindOfClass:[UIButton class]]) {
@@ -64,6 +65,7 @@
     xxx.cardOffset = 10.0;
     xxx.isInfiniteLoop =YES;
     xxx.delegate = self;
+    xxx.isScale = YES;
     xxx.imgUrlStrArr = @[@"http://f.hiphotos.baidu.com/image/pic/item/203fb80e7bec54e7c340af43b2389b504fc26a3b.jpg",
                          @"http://d.hiphotos.baidu.com/image/pic/item/0d338744ebf81a4c6231d43ddb2a6059242da6c6.jpg",
                          @"http://a.hiphotos.baidu.com/image/pic/item/4e4a20a4462309f788a28152790e0cf3d6cad6a4.jpg",
