@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
+
     UIButton *btn = [UIButton new];
     [self.view addSubview:btn];
     float w = 300.0  ,left = ([UIScreen mainScreen].bounds.size.width - w) /2.0;
@@ -66,15 +66,17 @@
     xxx.isInfiniteLoop =YES;
     xxx.delegate = self;
     xxx.isScale = YES;
-    xxx.imgUrlStrArr = @[@"http://f.hiphotos.baidu.com/image/pic/item/203fb80e7bec54e7c340af43b2389b504fc26a3b.jpg",
-                         @"http://d.hiphotos.baidu.com/image/pic/item/0d338744ebf81a4c6231d43ddb2a6059242da6c6.jpg",
-                         @"http://a.hiphotos.baidu.com/image/pic/item/4e4a20a4462309f788a28152790e0cf3d6cad6a4.jpg",
-                         @"http://d.hiphotos.baidu.com/image/pic/item/810a19d8bc3eb135101902e6ad1ea8d3fc1f4494.jpg",
-                         @"http://f.hiphotos.baidu.com/image/pic/item/86d6277f9e2f0708a5559f5de224b899a901f21f.jpg",
-                         @"http://h.hiphotos.baidu.com/image/pic/item/ca1349540923dd5441e81235da09b3de9d8248d7.jpg",
-                         @"http://c.hiphotos.baidu.com/image/pic/item/faedab64034f78f09d3f2eae72310a55b3191cb2.jpg",
-                         @"http://d.hiphotos.baidu.com/image/pic/item/622762d0f703918f037f88975a3d269758eec4c5.jpg"
-                         ];
+    xxx.imgUrlStrArr =
+     @[@"http://f.hiphotos.baidu.com/image/pic/item/203fb80e7bec54e7c340af43b2389b504fc26a3b.jpg",
+     @"http://d.hiphotos.baidu.com/image/pic/item/0d338744ebf81a4c6231d43ddb2a6059242da6c6.jpg",
+     @"http://a.hiphotos.baidu.com/image/pic/item/4e4a20a4462309f788a28152790e0cf3d6cad6a4.jpg",
+     @"http://d.hiphotos.baidu.com/image/pic/item/810a19d8bc3eb135101902e6ad1ea8d3fc1f4494.jpg",
+     @"http://f.hiphotos.baidu.com/image/pic/item/86d6277f9e2f0708a5559f5de224b899a901f21f.jpg",
+     @"http://h.hiphotos.baidu.com/image/pic/item/ca1349540923dd5441e81235da09b3de9d8248d7.jpg",
+     @"http://c.hiphotos.baidu.com/image/pic/item/faedab64034f78f09d3f2eae72310a55b3191cb2.jpg",
+     @"http://d.hiphotos.baidu.com/image/pic/item/622762d0f703918f037f88975a3d269758eec4c5.jpg"
+       ];
+     
     [xxx reloadData];
     
     
@@ -87,7 +89,7 @@
     customXxx.cardOffset = 10.0;
     customXxx.isInfiniteLoop =YES;
     customXxx.delegate = self;
-    customXxx.cardCount = 17;
+    customXxx.cardCount = 1;
     customXxx.customCardView = [CustomView new];
     customXxx.tag = 7;
     [customXxx reloadData];

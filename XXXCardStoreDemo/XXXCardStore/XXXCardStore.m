@@ -104,7 +104,7 @@
 
 - (void)reloadData {
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetCardView) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     self.cardHeight = self.height_xxx - (self.showOverlayCount-1)*self.cardOffset;
     
@@ -126,8 +126,17 @@
         [obj removeFromSuperview];
     }];
     
-    NSInteger count = self.showOverlayCount;
-    for (NSInteger i = 0; i < count; i++) {
+//    self.showOverlayCount;
+    if (self.customCardView) {
+        if (self.showOverlayCount > self.cardCount) {
+            self.showOverlayCount = self.cardCount;
+        }
+    }else{
+        if (self.showOverlayCount > self.imgUrlStrArr.count) {
+            self.showOverlayCount = self.imgUrlStrArr.count;
+        }
+    }
+    for (NSInteger i = 0; i < self.showOverlayCount; i++) {
         UIView *cardView = [UIView new];
         CGRect rect = CGRectMake(0, i*self.cardOffset, self.width_xxx, self.cardHeight);
         cardView.frame = rect;
@@ -155,14 +164,16 @@
     }
 }
 
-- (void)applicationDidBecomeActive {
+- (void)resetCardView {
     [self addSubview:self.nowMoveCardView];
     self.nowMoveCardView.center = CGPointMake(self.width_xxx/2.0, self.cardHeight/2.0);
     [self animationView:self.nowMoveCardView scale:1 duration:0.001];
 }
 
 - (void)panGes:(UIPanGestureRecognizer *)pan {
-    
+    if (self.showOverlayCount == 0) {
+        return;
+    }
     UIView *cardView = self.cardViewArr.firstObject;
     self.nowMoveCardView = cardView;
     if (pan.state == UIGestureRecognizerStateBegan) {

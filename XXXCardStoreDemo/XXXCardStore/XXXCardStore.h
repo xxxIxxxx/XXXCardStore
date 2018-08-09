@@ -72,6 +72,8 @@
 @property (nonatomic, strong) UIView *customCardView;
 
 
+///在 ViewController viewWillDisappear 中调用该方法复位。
+- (void)resetCardView;
 
 
 /**

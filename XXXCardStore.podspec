@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'XXXCardStore'
-  s.version      = '1.0.1'
+  s.version      = '1.0.2'
   s.summary      = '可拖拽的叠加卡片'
   s.homepage     = 'https://github.com/xxxIxxxx/XXXCardStore'
   s.license      = 'MIT'
