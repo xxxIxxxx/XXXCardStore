@@ -41,6 +41,20 @@ XXXCardStore *xxx = [XXXCardStore new];
 
 ```
 
+### ⚠️注意⚠️ 防止界面切换时 卡片停留在window层
+
+```
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.cardView resetCardView];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.cardView resetCardView];
+}
+```
+
 
 ### 自定义卡片内容
 ```
